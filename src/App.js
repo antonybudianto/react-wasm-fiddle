@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Wasm from 'react-wasm';
 import logo from './logo.svg';
 import './App.css';
 
@@ -8,17 +9,15 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <Wasm url="./add.wasm">
+            {({ loading, error, data }) => {
+              if (loading) return "Loading...";
+              if (error) return "An error has occurred";
+
+              const { instance } = data;
+              return <div>1 + 2 = {instance.exports.add(1, 2)}</div>;
+            }}
+          </Wasm>
         </header>
       </div>
     );
